@@ -1,0 +1,12 @@
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.csproj.AssemblyReference.cache
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.AssemblyInfoInputs.cache
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.AssemblyInfo.cs
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.csproj.CoreCompileInputs.cache
+D:\Projects\VendingMachine\VendingMachine\bin\Debug\net5.0\VendingMachine.deps.json
+D:\Projects\VendingMachine\VendingMachine\bin\Debug\net5.0\VendingMachine.dll
+D:\Projects\VendingMachine\VendingMachine\bin\Debug\net5.0\ref\VendingMachine.dll
+D:\Projects\VendingMachine\VendingMachine\bin\Debug\net5.0\VendingMachine.pdb
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.dll
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\ref\VendingMachine.dll
+D:\Projects\VendingMachine\VendingMachine\obj\Debug\net5.0\VendingMachine.pdb
