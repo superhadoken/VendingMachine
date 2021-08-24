@@ -11,7 +11,7 @@ namespace Display.Menus
 
         public IDictionary<int, object> Options { get; private set; }
 
-        public object SelectFromOptions(IDictionary<int, object> options)
+        public KeyValuePair<int, object> SelectFromOptions(IDictionary<int, object> options)
         {
             Options = options;
 
@@ -21,7 +21,7 @@ namespace Display.Menus
             //todo - validate that selection was within range
             Options.TryGetValue(userSelectedOption, out var selectedValue);
 
-            return selectedValue;
+            return new KeyValuePair<int, object>(userSelectedOption, selectedValue);
         }
     }
 }

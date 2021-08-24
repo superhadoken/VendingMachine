@@ -1,7 +1,6 @@
 ﻿using Display.Menus;
 using Display.Views;
 using System.Collections.Generic;
-using System.Globalization;
 using VendingMachine.Coins;
 using VendingMachine.Validators;
 using VendingMachine.Vendor;
@@ -25,10 +24,30 @@ namespace Display.VendorOrchestrators
         {
             while (true)
             {
-                AcceptCoins();
-
+                CreateMainMenu();
             }
+        }
 
+        private void CreateMainMenu()
+        {
+            var sections = new List<DisplaySection>
+            {
+                new(1, SetVendorStatusMessage()),
+                new(2, "Select Vending Machine Action"),
+                new(3, CreateMainMenuSelect(out var menuOptions))
+            };
+
+            _displayContainer.DrawNewScreen(sections);
+
+            var (selectedMenuOption, _) = _menuHandler.SelectFromOptions(menuOptions);
+            
+            switch (selectedMenuOption)
+            {
+                case 1: AcceptCoins();
+                    break;
+                case 2: SelectProduct();
+                    break;
+            }
         }
 
         private void AcceptCoins()
@@ -42,16 +61,32 @@ namespace Display.VendorOrchestrators
 
             _displayContainer.DrawNewScreen(sections);
 
-            var selectedCoin = (Coin)_menuHandler.SelectFromOptions(menuOptions);
+            var (_, selectedCoin) = _menuHandler.SelectFromOptions(menuOptions);
 
-            _vendor.AddCoin(selectedCoin);
+            _vendor.AddCoin((Coin)selectedCoin);
+        }
+
+        private void SelectProduct()
+        {
+            var sections = new List<DisplaySection>
+            {
+                new(1, SetVendorStatusMessage()),
+                new(2, "Select Product to Purchase"),
+                new(3, CreateCoinSelect(out var menuOptions))
+            };
+
+            _displayContainer.DrawNewScreen(sections);
+
+            var (_, selectedCoin) = _menuHandler.SelectFromOptions(menuOptions);
+
+            _vendor.AddCoin((Coin)selectedCoin);
         }
 
         private string SetVendorStatusMessage()
         {
-            return _vendor.InsertedCoins.AmountInPence < 1
+            return _vendor.CustomerCreditPence < 1
                 ? "INSERT COIN"
-                : "£" + _vendor.InsertedCoins.AmountInGbp.ToString(CultureInfo.InvariantCulture);
+                : _vendor.CustomerCreditGbp.ToString("C");
         }
 
         private static string CreateCoinSelect(out IDictionary<int, object> menuOptions)
@@ -70,6 +105,21 @@ namespace Display.VendorOrchestrators
             }
 
             return coinOptions;
+        }
+
+        //todo selectors like this and above can be pushed into service/separated out 
+        private static string CreateMainMenuSelect(out IDictionary<int, object> menuOptions)
+        {
+            const string addCoins = "Add Coin(s)";
+            const string selectProduct = "Select Product";
+
+            menuOptions = new Dictionary<int, object>
+            {
+                {1, addCoins },
+                {2, selectProduct}
+            };
+
+            return $"1) {addCoins}\n2) {selectProduct}";
         }
     }
 }

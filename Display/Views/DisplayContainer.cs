@@ -27,6 +27,8 @@ namespace Display.Views
 
         public void DrawNewScreen(List<DisplaySection> displaySections)
         {
+            Console.Clear();
+
             NewScreen(displaySections);
 
             var orderedDisplay = DisplaySections.OrderBy(x => x.Priority);
