@@ -9,8 +9,9 @@ namespace VendingMachine.Vendor
         protected readonly List<Coin> _coins;
         internal VendingMachineCashStore(IEnumerable<Coin> startingCoins)
         {
-            AddCoins(startingCoins);
             _coins = new List<Coin>();
+            
+            AddCoins(startingCoins);
         }
 
         public IReadOnlyCollection<Coin> Coins => _coins;

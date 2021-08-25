@@ -1,7 +1,9 @@
 ﻿using Display.Menus;
 using Display.Views;
 using System.Collections.Generic;
+using System.Linq;
 using VendingMachine.Coins;
+using VendingMachine.Products;
 using VendingMachine.Validators;
 using VendingMachine.Vendor;
 
@@ -72,21 +74,28 @@ namespace Display.VendorOrchestrators
             {
                 new(1, SetVendorStatusMessage()),
                 new(2, "Select Product to Purchase"),
-                new(3, CreateCoinSelect(out var menuOptions))
+                new(3, CreateProductSelect(out var menuOptions))
             };
 
             _displayContainer.DrawNewScreen(sections);
 
-            var (_, selectedCoin) = _menuHandler.SelectFromOptions(menuOptions);
+            var (_, selectedProduct) = _menuHandler.SelectFromOptions(menuOptions);
 
-            _vendor.AddCoin((Coin)selectedCoin);
+            var purchaseSucceeded = _vendor.PurchaseProduct((Product) selectedProduct);
+
+            SimpleDisplayMessage(purchaseSucceeded ? "THANK YOU" : "PRICE");
         }
 
         private string SetVendorStatusMessage()
         {
-            return _vendor.CustomerCreditPence < 1
-                ? "INSERT COIN"
-                : _vendor.CustomerCreditGbp.ToString("C");
+            if (_vendor.CustomerCreditPence < 1)
+            {
+                return _vendor.VendingMachineCashStore.Coins.Any() 
+                    ? "INSERT COIN" 
+                    : "EXACT CHANGE ONLY";
+            }
+            
+            return _vendor.CustomerCreditGbp.ToString("C");
         }
 
         private static string CreateCoinSelect(out IDictionary<int, object> menuOptions)
@@ -107,6 +116,24 @@ namespace Display.VendorOrchestrators
             return coinOptions;
         }
 
+        private static string CreateProductSelect(out IDictionary<int, object> menuOptions)
+        {
+            var productOptions = "";
+            var index = 1;
+            menuOptions = new Dictionary<int, object>();
+
+            foreach (var product in ProductsList.Products)
+            {
+                productOptions += $"{index}) {product.Description} - {product.CostInGbp:C} \n";
+
+                menuOptions.Add(index, product);
+
+                index++;
+            }
+
+            return productOptions;
+        }
+
         //todo selectors like this and above can be pushed into service/separated out 
         private static string CreateMainMenuSelect(out IDictionary<int, object> menuOptions)
         {
@@ -120,6 +147,16 @@ namespace Display.VendorOrchestrators
             };
 
             return $"1) {addCoins}\n2) {selectProduct}";
+        }
+
+        private void SimpleDisplayMessage(string message)
+        {
+            var sections = new List<DisplaySection>
+            {
+                new(1, message)
+            };
+
+            _displayContainer.DrawNewScreen(sections);
         }
     }
 }
