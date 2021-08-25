@@ -83,7 +83,7 @@ namespace Display.VendorOrchestrators
 
             var purchaseSucceeded = _vendor.PurchaseProduct((Product) selectedProduct);
 
-            SimpleDisplayMessage(purchaseSucceeded ? "THANK YOU" : "PRICE");
+            SimpleDisplayMessage(purchaseSucceeded ? "THANK YOU" : "PRICE"); //todo: this assumes you don't have enough money if you fail - introduce check
         }
 
         private string SetVendorStatusMessage()
